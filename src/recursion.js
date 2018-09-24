@@ -95,6 +95,7 @@ var exponent = function(base, exp, i = exp, total = 1) {
     } else if (exp === 1) {
         return base;
     }
+    if (i === 0){
         return total;
     }
     if (exp < 0) {
@@ -112,15 +113,46 @@ var exponent = function(base, exp, i = exp, total = 1) {
 // powerOfTwo(1); // true
 // powerOfTwo(16); // true
 // powerOfTwo(10); // false
-var powerOfTwo = function(n) {
+var powerOfTwo = function(n, total = n) {
+    if(n === 1){
+        return true
+    }else if(n === 0){
+        return false
+    }
+    if(total === 2){
+        return true
+    }else if(total < 2){
+        return false
+    }
+    total = total/2
+    return powerOfTwo(n, total)
+
 };
 
 // 9. Write a function that accepts a string a reverses it.
-var reverse = function(string) {
+var reverse = function(string, i = string.length-1, finalString="") {
+    if(i < 0){
+        return finalString
+    }
+    finalString = finalString.concat(string.charAt(i))
+    i--
+    return reverse(string, i, finalString)
 };
 
 // 10. Write a function that determines if a string is a palindrome.
-var palindrome = function(string) {
+var palindrome = function(string, i = string.length-1, back = "") {
+    string.replace(" ", "").toLowerCase()
+    back.replace(" ","").toLowerCase()
+    if(i < 0){
+        if(back == string){
+            return true
+        }else{
+            return false
+        }
+    }
+    back = back.concat(string.charAt(i))
+    i--
+    return palindrome(string, i, back)
 };
 
 // 11. Write a function that returns the remainder of x divided by y without using the
@@ -133,7 +165,18 @@ var modulo = function(x, y) {
 
 // 12. Write a function that multiplies two numbers without using the * operator  or
 // JavaScript's Math object.
-var multiply = function(x, y) {
+var multiply = function(x, y, i = y, total = 0) {
+    if(i === 0){
+        return total
+    }
+    if( y < 0){
+        total -= x
+        i++
+    } else if(y > 0){
+        total += x
+        i--
+    }
+    return multiply(x, y, i, total)
 };
 
 // 13. Write a function that divides two numbers without using the / operator  or
@@ -154,7 +197,25 @@ var gcd = function(x, y) {
 // compareStr('house', 'houses') // false
 // compareStr('', '') // true
 // compareStr('tomato', 'tomato') // true
-var compareStr = function(str1, str2) {
+var compareStr = function(str1, str2, i = 0, truth = 0) {
+
+    if(i === str1.length && i === str2 ){
+
+        if(truth === str1.length && truth === str2.length){
+            return true
+        }else{
+            return false
+        }
+    }
+    if(str1.length === str2.length){
+        if(str1.charAt(i) === str2.charAt(i)){
+            truth++
+        }
+    }else{
+        return false
+    }
+    i++
+    return compareStr(str1, str2, i, truth)
 };
 
 // 16. Write a function that accepts a string and creates an array where each letter
