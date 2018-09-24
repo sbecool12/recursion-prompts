@@ -141,18 +141,18 @@ var reverse = function(string, i = string.length-1, finalString="") {
 
 // 10. Write a function that determines if a string is a palindrome.
 var palindrome = function(string, i = string.length-1, back = "") {
-    string.replace(" ", "").toLowerCase()
-    back.replace(" ","").toLowerCase()
+    string = string.replace(" ", "")
+    back = back.replace(" ", "")
     if(i < 0){
-        if(back == string){
-            return true
+        if(back.toLowerCase() == string.toLowerCase()){
+            return true;
         }else{
-            return false
+            return false;
         }
     }
-    back = back.concat(string.charAt(i))
-    i--
-    return palindrome(string, i, back)
+    back = back.concat(string.charAt(i));
+    i--;
+    return palindrome(string, i, back);
 };
 
 // 11. Write a function that returns the remainder of x divided by y without using the
@@ -199,7 +199,7 @@ var gcd = function(x, y) {
 // compareStr('tomato', 'tomato') // true
 var compareStr = function(str1, str2, i = 0, truth = 0) {
 
-    if(i === str1.length && i === str2 ){
+    if(i === str1.length && i === str2.length ){
 
         if(truth === str1.length && truth === str2.length){
             return true
@@ -220,17 +220,46 @@ var compareStr = function(str1, str2, i = 0, truth = 0) {
 
 // 16. Write a function that accepts a string and creates an array where each letter
 // occupies an index of the array.
-var createArray = function(str){
+var createArray = function(str, i = 0, final = []){
+    // if (final[0] == str[0]) {
+    //     final.push(i);
+    //     i++;
+    // }
+    // if (str == final) {
+    //     return final;
+    // }
+
+    //String.prototype.split() cant use
+    if(i === str.length){
+        return final;   
+    }
+    final.push(str.charAt(i));
+    i++;
+    return createArray(str, i, final);
 };
 
 // 17. Reverse the order of an array
-var reverseArr = function (array) {
+var reverseArr = function (array, i = array.length - 1, finalArr = []) {
+    if (i < 0) {
+        return finalArr;
+    }
+    finalArr.push(array[i]);
+    i--;
+    return reverseArr(array, i, finalArr);
 };
 
 // 18. Create a new array with a given value and length.
 // buildList(0,5) // [0,0,0,0,0]
 // buildList(7,3) // [7,7,7]
-var buildList = function(value, length) {
+var buildList = function(value, length, array = []) {
+    if (array.length === length) {
+        return array;
+    }
+    if (value) {
+        array.push(length);
+    }
+    length++;
+    return buildList(value, length, array)
 };
 
 // 19. Count the occurence of a value inside a list.
