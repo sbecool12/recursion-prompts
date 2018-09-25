@@ -251,26 +251,43 @@ var reverseArr = function (array, i = array.length - 1, finalArr = []) {
 // 18. Create a new array with a given value and length.
 // buildList(0,5) // [0,0,0,0,0]
 // buildList(7,3) // [7,7,7]
-var buildList = function(value, length, array = []) {
-    if (array.length === length) {
+var buildList = function(value, length, i = length, array = []) {
+    if (i === 0) {
         return array;
     }
-    if (value) {
-        array.push(length);
-    }
-    length++;
-    return buildList(value, length, array)
+        array.push(value);
+    
+    i--;
+    return buildList(value, length, i, array)
 };
 
 // 19. Count the occurence of a value inside a list.
 // countOccurrence([2,7,4,4,1,4], 4) // 3
 // countOccurrence([2,'banana',4,4,1,'banana'], 'banana') // 2
-var countOccurrence = function(array, value) {
+var countOccurrence = function(array, value, i = 0, number = 0) {
+    /*
+make an if statement says if value is inside the array => number++
+*/
+    //Base Case =>  i equals array.length - 1 
+    if(i === array.length){
+        return number
+    }
+    if(array[i] === value){
+        number++
+    }
+    i++
+    return countOccurrence(array, value, i, number)
 };
 
 // 20. Write a recursive version of map.
 // rMap([1,2,3], timesTwo); // [2,4,6]
-var rMap = function(array, callback) {
+var rMap = function(array, callback, i = 0, arr = []) {
+    if (i === array.length) {
+        return arr;
+    }
+    arr.push(callback(array[i]));
+    i++
+    return rMap(array, callback, i, arr);
 };
 
 // 21. Write a function that counts the number of times a key occurs in an object.
@@ -305,18 +322,41 @@ var fibonacci = function(n) {
 // nthFibo(5); // 5
 // nthFibo(7); // 13
 // nthFibo(3); // 2
-var nthFibo = function(n) {
+var nthFibo = function(n, i = 0, number = 0, array = [0, 1, 1]) {
+    if (n < 0) {
+        return null;
+    }
+    if (array.length-1 >= n) {
+        return array[n];
+    } else {
+        array.push((array[array.length - 1] + array[array.length - 2]));
+    }
+    return nthFibo(n, i, number, array);
 };
 
 // 26. Given an array of words, return a new array containing each word capitalized.
 // var words = ['i', 'am', 'learning', 'recursion'];
 // capitalizedWords(words); // ['I', 'AM', 'LEARNING', 'RECURSION']
-var capitalizeWords = function(input) {
+var capitalizeWords = function(input, i = 0, array = []) {
+    if (input.length === array.length) {
+        return array;
+    }
+    array.push(input[i].toUpperCase());
+    i++
+    return capitalizeWords(input, i, array);
 };
 
 // 27. Given an array of strings, capitalize the first letter of each index.
 // capitalizeFirst(['car', 'poop', 'banana']); // ['Car', 'Poop', 'Banana']
-var capitalizeFirst = function(array) {
+var capitalizeFirst = function(array, i = 0, arr = [], string) {
+    if (array.length === arr.length) {
+        return arr;
+    }
+    string = array[i]
+    string[0] = string.charAt(0).toUpperCase()
+    arr.push(string);
+    i++;
+    return capitalizeFirst(array, i, arr);
 };
 
 // 28. Return the sum of all even numbers in an object containing nested objects.
