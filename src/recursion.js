@@ -348,15 +348,17 @@ var capitalizeWords = function(input, i = 0, array = []) {
 
 // 27. Given an array of strings, capitalize the first letter of each index.
 // capitalizeFirst(['car', 'poop', 'banana']); // ['Car', 'Poop', 'Banana']
-var capitalizeFirst = function(array, i = 0, arr = [], string) {
+var capitalizeFirst = function(array, i = 0, arr = [], firstChar,string) {
     if (array.length === arr.length) {
         return arr;
     }
-    string = array[i]
-    string[0] = string.charAt(0).toUpperCase()
+    string = array[i];
+    firstChar = string.slice(0,1);
+    firstChar = firstChar.toUpperCase();
+    string = string.replace(string.charAt(0), firstChar)
     arr.push(string);
     i++;
-    return capitalizeFirst(array, i, arr);
+    return capitalizeFirst(array, i, arr, string);
 };
 
 // 28. Return the sum of all even numbers in an object containing nested objects.
@@ -382,10 +384,12 @@ var letterTally = function(str, obj = {}, i = 0) {
     if (i === str.length){
         return obj
     }
-    obj.str[i] = 0
-    obj.str[i] += 1 
+    if(isNaN(obj[str[i]])){
+    obj[str[i]] = 0
+    }
+    obj[str[i]] += 1 
     i++
-    letterTally(str, obj, i)
+    return letterTally(str, obj, i)
 };
 
 // 31. Eliminate consecutive duplicates in a list.  If the list contains repeated
@@ -393,7 +397,16 @@ var letterTally = function(str, obj = {}, i = 0) {
 // elements should not be changed.
 // Example: compress([1, 2, 2, 3, 4, 4, 5, 5, 5]) // [1, 2, 3, 4, 5]
 // Example: compress([1, 2, 2, 3, 4, 4, 2, 5, 5, 5, 4, 4]) // [1, 2, 3, 4, 2, 5, 4]
-var compress = function(list) {
+var compress = function(list, arr = [], i = 0) {
+    if(i === list.length){
+        return arr
+    }
+
+    if(list[i] != arr[arr.length-1]){
+        arr.push(list[i]);
+    }
+    i++
+    return compress(list, arr, i)
 };
 
 // 32. Augment every element in a list with a new value where each element is an array
@@ -405,14 +418,48 @@ var augmentElements = function(array, aug) {
 // 33. Reduce a series of zeroes to a single 0.
 // minimizeZeroes([2,0,0,0,1,4]) // [2,0,1,4]
 // minimizeZeroes([2,0,0,0,1,0,0,4]) // [2,0,1,0,4]
-var minimizeZeroes = function(array) {
+var minimizeZeroes = function(array, arr = [], i = 0) {
+    if(i === array.length){
+        return arr
+    }
+
+    if(array[i] != 0){
+        arr.push(array[i])
+    }else if(array[i] === 0 && arr[arr.length-1] != 0){
+        arr.push(array[i])
+    }
+
+    i++
+    return minimizeZeroes(array, arr, i)
+
 };
 
 // 34. Alternate the numbers in an array between positive and negative regardless of
 // their original sign.  The first number in the index always needs to be positive.
 // alternateSign([2,7,8,3,1,4]) // [2,-7,8,-3,1,-4]
 // alternateSign([-2,-7,8,3,-1,4]) // [2,-7,8,-3,1,-4]
-var alternateSign = function(array) {
+var alternateSign = function(array, arr = [], i = 0) {
+    if(i === array.length){
+        return arr
+    }
+    
+
+    
+    if(i%2 != 0){
+        if(array[i] < 0){
+            arr.push(array[i] * 1)
+        }else if(array[i] > 0){
+            arr.push(array[i] * -1)
+        }
+    }else if(i%2 === 0){
+        if(array[i] < 0){
+            arr.push(array[i] * -1)
+        }else if(array[i] > 0){
+            arr.push(array[i] * 1)
+        }
+    }
+    i++
+    return alternateSign(array, arr, i)
 };
 
 // 35. Given a string, return a string with digits converted to their word equivalent.
